@@ -36,6 +36,8 @@ const UserSchema = new Schema<TUser, UserStaticModel>({
     type: String,
     required: [true, 'User name is required'],
     unique: true,
+
+
   },
   password: { type: String, required: [true, 'Password is required'] },
   fullName: {

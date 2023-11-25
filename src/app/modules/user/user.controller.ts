@@ -22,6 +22,7 @@ const createUser = async (req: Request, res: Response) => {
   }
 }
 
+
 const getAllUser = async (req: Request, res: Response) => {
   try {
     const result = await userService.getAllUserFromDB()
@@ -38,6 +39,7 @@ const getAllUser = async (req: Request, res: Response) => {
     })
   }
 }
+
 
 const getSingleUser = async (req: Request, res: Response) => {
   try {
@@ -59,6 +61,7 @@ const getSingleUser = async (req: Request, res: Response) => {
   }
 }
 
+
 const updateSingleUser = async (req: Request, res: Response) => {
   try {
     const user = req.body
@@ -72,11 +75,12 @@ const updateSingleUser = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(200).json({
       success: true,
-      message: error.message || 'Something went wrong',
+      message: error.message || 'User not found',
       data: error,
     })
   }
 }
+
 
 const deleteSingleUser = async (req: Request, res: Response) => {
   try {
@@ -91,11 +95,13 @@ const deleteSingleUser = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(404).json({
       success: false,
-      message: error.message || 'User not deleted',
+      message: error.message || 'User not found',
       error: error,
     })
   }
 }
+
+
 
 const addProduct = async (req: Request, res: Response) => {
   try {
@@ -116,7 +122,7 @@ const addProduct = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(404).json({
       success: false,
-      message: error.message || 'User not deleted',
+      message: error.message || 'User not found',
       error: error,
     })
   }
@@ -142,7 +148,7 @@ const getOrdersForUser = async (req: Request, res: Response) => {
   } catch (error:any) {
     res.status(404).json({
       success: false,
-      message: error.message || 'User not deleted',
+      message: error.message || 'User not found',
       error: error,
     })
   }
@@ -159,18 +165,19 @@ const getTotalPriceForUser = async (req: Request, res: Response) => {
     }
     res.status(200).json({
       success: true,
-      message: 'Order retrieve successfully',
+      message: 'Order total price retrieve successfully',
       data: result,
     })
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error:any) {
     res.status(404).json({
       success: false,
-      message: error.message || 'User not deleted',
+      message: error.message || 'User not found',
       error: error,
     })
   }
 };
+
 
 export const userController = {
   createUser,
