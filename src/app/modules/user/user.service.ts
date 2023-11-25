@@ -22,15 +22,16 @@ const getSingleUserFromDB = async (id: string) => {
     throw new Error('User not exist')
   }
   const result = await UserModel.findOne({ userId: id })
-
   return result
 }
 
-const updateSingleUser = async (id:string) =>{
-  const result = await UserModel.updateOne({userId:id})
+const updateSingleUser = async (id: string) => {
+  if (!(await UserModel.isUserExist(id))) {
+    throw new Error('User not exist')
+  }
+  const result = await UserModel.updateOne({ userId: id })
   return result
 }
-
 
 const deleteSingleUserFromDB = async (id: string) => {
   if (!(await UserModel.isUserExist(id))) {
@@ -40,63 +41,63 @@ const deleteSingleUserFromDB = async (id: string) => {
   return result
 }
 
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const addProductToOrder = async (userId: string, productData: any) => {
+  if (!(await UserModel.isUserExist(userId))) {
+    throw new Error('User not exist')
+  }
 
-  const user = await UserModel.findOne({ userId });
+  const user = await UserModel.findOne({ userId })
   if (!user) {
-    return { error: 'User not found' };
+    return { error: 'User not found' }
   }
   if (!user.orders) {
-    user.orders = [];
+    user.orders = []
   }
 
   user.orders.push({
     productName: productData.productName,
     price: productData.price,
     quantity: productData.quantity,
-  });
-  await user.save();
-  return user;
-};
-
-
+  })
+  await user.save()
+  return user
+}
 
 const getAllOrdersForUser = async (userId: string) => {
-  const user = await UserModel.findOne({ userId });
-
-  if (!user) {
-    return { error: 'User not found' };
+  if (!(await UserModel.isUserExist(userId))) {
+    throw new Error('User not exist')
   }
 
+  const user = await UserModel.findOne({ userId })
 
-  return user.orders || [];
-};
+  if (!user) {
+    return { error: 'User not found' }
+  }
 
-
+  return user.orders || []
+}
 
 const calculateTotalPriceForUser = async (userId: string) => {
-  const user = await UserModel.findOne({ userId });
-
-  if (!user) {
-    return { error: 'User not found' };
+  if (!(await UserModel.isUserExist(userId))) {
+    throw new Error('User not exist')
   }
 
+  const user = await UserModel.findOne({ userId })
+
+  if (!user) {
+    return { error: 'User not found' }
+  }
 
   const totalPrice = user.orders
-  ? user.orders.reduce((total, order) => {
-      const price = order.price || 0
-      const quantity = order.quantity || 0;
-      return total + price * quantity;
-    }, 0)
-  : 0;
-  return { totalPrice };
-};
-
-
-
-
+    ? user.orders.reduce((total, order) => {
+        const price = order.price || 0
+        const quantity = order.quantity || 0
+        return total + price * quantity
+      }, 0)
+    : 0
+  return { totalPrice }
+}
 
 export const userService = {
   createUserToDB,
@@ -106,5 +107,5 @@ export const userService = {
   updateSingleUser,
   addProductToOrder,
   getAllOrdersForUser,
-  calculateTotalPriceForUser 
+  calculateTotalPriceForUser,
 }
