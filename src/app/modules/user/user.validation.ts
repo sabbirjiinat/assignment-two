@@ -19,7 +19,7 @@ const UserOrderZodSchema = z.object({
 
 export const UserZodSchema = z.object({
   userId: z.number({ required_error: 'User ID is required' }),
-  userName: z.string({ required_error: 'User name is required' }),
+  username: z.string({ required_error: 'User name is required' }),
   password: z.string({ required_error: 'Password is required' }).max(30).min(6),
   fullName: UserNameZodSchema,
   age: z.number({ required_error: 'Age is required' }),

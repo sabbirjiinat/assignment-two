@@ -32,7 +32,7 @@ const UserSchema = new Schema<TUser, UserStaticModel>({
     required: [true, 'User id is required'],
     unique: true,
   },
-  userName: {
+  username: {
     type: String,
     required: [true, 'User name is required'],
     unique: true,

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from 'express'
 import { userService } from './user.service'
 import { UserZodSchema } from './user.validation'
@@ -48,10 +49,9 @@ const getSingleUser = async (req: Request, res: Response) => {
 
     res.status(200).json({
       success: true,
-      message: 'User retrieve successfully',
+      message: 'User fetched successfully!',
       data: result,
     })
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     res.status(404).json({
       success: false,
@@ -62,24 +62,28 @@ const getSingleUser = async (req: Request, res: Response) => {
 }
 
 
+
 const updateSingleUser = async (req: Request, res: Response) => {
   try {
-    const user = req.body
-    const result = await userService.updateSingleUser(user)
+    const userId = req.params.userId;
+
+     await userService.updateSingleUser(userId, req.body);
+    const result = await userService.getSingleUserFromDB(userId)
     res.status(200).json({
       success: true,
       message: 'User updated successfully',
       data: result,
-    })
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    });
   } catch (error: any) {
-    res.status(200).json({
-      success: true,
+    res.status(404).json({
+      success: false,
       message: error.message || 'User not found',
-      data: error,
-    })
+      error: error,
+    });
   }
-}
+};
+
+
 
 
 const deleteSingleUser = async (req: Request, res: Response) => {
@@ -88,10 +92,9 @@ const deleteSingleUser = async (req: Request, res: Response) => {
     const result = await userService.deleteSingleUserFromDB(userId)
     res.status(200).json({
       success: true,
-      message: 'User deleted successfully',
+      message: 'User deleted successfully!',
       data: result,
     })
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     res.status(404).json({
       success: false,
@@ -115,10 +118,9 @@ const addProduct = async (req: Request, res: Response) => {
 
     res.status(200).json({
       success: true,
-      message: 'Product added successfully',
+      message: '"Order created successfully!"',
       data: result,
     })
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     res.status(404).json({
       success: false,
@@ -144,7 +146,6 @@ const getOrdersForUser = async (req: Request, res: Response) => {
       message: 'Order retrieve successfully',
       data: result,
     })
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error:any) {
     res.status(404).json({
       success: false,
@@ -168,7 +169,6 @@ const getTotalPriceForUser = async (req: Request, res: Response) => {
       message: 'Order total price retrieve successfully',
       data: result,
     })
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error:any) {
     res.status(404).json({
       success: false,

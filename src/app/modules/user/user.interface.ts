@@ -19,7 +19,7 @@ export type TUserOrders = {
 
 export type TUser = {
   userId: number
-  userName: string
+  username: string
   password: string
   fullName: TUserName
   age: number
@@ -34,3 +34,43 @@ export interface UserStaticModel extends Model<TUser> {
   // eslint-disable-next-line no-unused-vars
   isUserExist(id: string): Promise<TUser | null>
 }
+
+
+
+
+
+
+
+// {
+//   "userId": 5,
+//   "userName": "john_doeu",
+//   "password": "secure_password",
+//   "fullName": {
+//       "firstName": "John",
+//       "lastName": "Doe"
+//   },
+//   "age": 25,
+//   "email": "john.doe@example.com",
+//   "isActive": true,
+//   "hobbies": [
+//       "Reading",
+//       "Gaming"
+//   ],
+//   "address": {
+//       "street": "123 Main Street",
+//       "city": "Anytown",
+//       "country": "Country"
+//   },
+//   "orders": [
+//       {
+//           "productName": "Product 1",
+//           "price": 29.99,
+//           "quantity": 2
+//       },
+//       {
+//           "productName": "Product 2",
+//           "price": 49.99,
+//           "quantity": 1
+//       }
+//   ]
+// }

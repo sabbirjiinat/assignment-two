@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { TUser } from './user.interface'
 import { UserModel } from './user.model'
 
@@ -21,15 +22,23 @@ const getSingleUserFromDB = async (id: string) => {
   if (!(await UserModel.isUserExist(id))) {
     throw new Error('User not exist')
   }
-  const result = await UserModel.findOne({ userId: id })
+
+  const result = await UserModel.findOne(
+    { userId: id },
+    { password: 0, orders: 0 },
+  )
   return result
 }
 
-const updateSingleUser = async (id: string) => {
-  if (!(await UserModel.isUserExist(id))) {
+const updateSingleUser = async (userId: string, updatedUserData: any) => {
+  if (!(await UserModel.isUserExist(userId))) {
     throw new Error('User not exist')
   }
-  const result = await UserModel.updateOne({ userId: id })
+
+  const result = await UserModel.updateOne(
+    { userId },
+    { $set: updatedUserData },
+  )
   return result
 }
 
@@ -41,13 +50,13 @@ const deleteSingleUserFromDB = async (id: string) => {
   return result
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const addProductToOrder = async (userId: string, productData: any) => {
   if (!(await UserModel.isUserExist(userId))) {
     throw new Error('User not exist')
   }
 
   const user = await UserModel.findOne({ userId })
+
   if (!user) {
     return { error: 'User not found' }
   }
