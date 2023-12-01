@@ -22,8 +22,8 @@ const UserAddressSchema = new Schema<TUserAddress>({
 
 const UserOrderSchema = new Schema<TUserOrders>({
   productName: { type: String },
-  price: { type: Number,  },
-  quantity: { type: Number,  },
+  price: { type: Number },
+  quantity: { type: Number },
 })
 
 const UserSchema = new Schema<TUser, UserStaticModel>({
@@ -36,8 +36,6 @@ const UserSchema = new Schema<TUser, UserStaticModel>({
     type: String,
     required: [true, 'User name is required'],
     unique: true,
-
-
   },
   password: { type: String, required: [true, 'Password is required'] },
   fullName: {
@@ -52,8 +50,9 @@ const UserSchema = new Schema<TUser, UserStaticModel>({
     type: UserAddressSchema,
     required: [true, 'Address id is required'],
   },
-  orders: [UserOrderSchema] ,
+  orders: [UserOrderSchema],
 })
+
 
 UserSchema.pre('save', async function (next) {
   this.password = await bcrypt.hash(

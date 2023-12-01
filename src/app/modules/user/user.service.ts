@@ -3,6 +3,14 @@ import { TUser } from './user.interface'
 import { UserModel } from './user.model'
 
 const createUserToDB = async (userData: TUser) => {
+  const existingUser = await UserModel.findOne({
+    $or: [{ userId: userData.userId }, { username: userData.username }],
+  })
+
+  if (existingUser) {
+    throw new Error('UserId and username need to be unique')
+  }
+
   const result = await UserModel.create(userData)
   return result
 }

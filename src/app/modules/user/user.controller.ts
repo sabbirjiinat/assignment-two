@@ -14,10 +14,10 @@ const createUser = async (req: Request, res: Response) => {
       message: 'User created successfully',
       data: result,
     })
-  } catch (error) {
+  } catch (error:any) {
     res.status(404).json({
       success: false,
-      message: 'User not found',
+      message: error.message || 'User not found',
       error: error,
     })
   }
@@ -66,6 +66,7 @@ const getSingleUser = async (req: Request, res: Response) => {
 const updateSingleUser = async (req: Request, res: Response) => {
   try {
     const userId = req.params.userId;
+  
 
      await userService.updateSingleUser(userId, req.body);
     const result = await userService.getSingleUserFromDB(userId)
