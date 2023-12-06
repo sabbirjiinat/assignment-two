@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from 'express'
 import { userService } from './user.service'
-import { UserZodSchema } from './user.validation'
-
+import { UpdateUserZodSchema, UserZodSchema } from './user.validation'
 
 const createUser = async (req: Request, res: Response) => {
   try {
@@ -14,7 +13,7 @@ const createUser = async (req: Request, res: Response) => {
       message: 'User created successfully',
       data: result,
     })
-  } catch (error:any) {
+  } catch (error: any) {
     res.status(404).json({
       success: false,
       message: error.message || 'User not found',
@@ -22,7 +21,6 @@ const createUser = async (req: Request, res: Response) => {
     })
   }
 }
-
 
 const getAllUser = async (req: Request, res: Response) => {
   try {
@@ -40,7 +38,6 @@ const getAllUser = async (req: Request, res: Response) => {
     })
   }
 }
-
 
 const getSingleUser = async (req: Request, res: Response) => {
   try {
@@ -61,31 +58,26 @@ const getSingleUser = async (req: Request, res: Response) => {
   }
 }
 
-
-
 const updateSingleUser = async (req: Request, res: Response) => {
   try {
-    const userId = req.params.userId;
-  
+    const userId = req.params.userId
 
-     await userService.updateSingleUser(userId, req.body);
+    const zodValidation = UpdateUserZodSchema.parse(req.body)
+    await userService.updateSingleUser(userId, zodValidation)
     const result = await userService.getSingleUserFromDB(userId)
     res.status(200).json({
       success: true,
       message: 'User updated successfully',
       data: result,
-    });
+    })
   } catch (error: any) {
     res.status(404).json({
       success: false,
       message: error.message || 'User not found',
       error: error,
-    });
+    })
   }
-};
-
-
-
+}
 
 const deleteSingleUser = async (req: Request, res: Response) => {
   try {
@@ -104,8 +96,6 @@ const deleteSingleUser = async (req: Request, res: Response) => {
     })
   }
 }
-
-
 
 const addProduct = async (req: Request, res: Response) => {
   try {
@@ -131,54 +121,46 @@ const addProduct = async (req: Request, res: Response) => {
   }
 }
 
-
-
-
-
-
 const getOrdersForUser = async (req: Request, res: Response) => {
   try {
-    const { userId } = req.params;
+    const { userId } = req.params
 
-    const result = await userService.getAllOrdersForUser(userId);
- 
+    const result = await userService.getAllOrdersForUser(userId)
+
     res.status(200).json({
       success: true,
       message: 'Order retrieve successfully',
       data: result,
     })
-  } catch (error:any) {
+  } catch (error: any) {
     res.status(404).json({
       success: false,
       message: error.message || 'User not found',
       error: error,
     })
   }
-};
-
-
+}
 
 const getTotalPriceForUser = async (req: Request, res: Response) => {
   try {
-    const { userId } = req.params;
-    const result = await userService.calculateTotalPriceForUser(userId);
+    const { userId } = req.params
+    const result = await userService.calculateTotalPriceForUser(userId)
     if (result.error) {
-      return res.status(404).json({ error: result.error });
+      return res.status(404).json({ error: result.error })
     }
     res.status(200).json({
       success: true,
       message: 'Order total price retrieve successfully',
       data: result,
     })
-  } catch (error:any) {
+  } catch (error: any) {
     res.status(404).json({
       success: false,
       message: error.message || 'User not found',
       error: error,
     })
   }
-};
-
+}
 
 export const userController = {
   createUser,
@@ -188,5 +170,5 @@ export const userController = {
   updateSingleUser,
   addProduct,
   getOrdersForUser,
-  getTotalPriceForUser
+  getTotalPriceForUser,
 }
